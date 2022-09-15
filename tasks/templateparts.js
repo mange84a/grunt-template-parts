@@ -1,6 +1,6 @@
 /*
-  * grunt-kreation
-  * https://github.com/monk/kreation-grunt
+  * grunt-template-parts
+  * https://github.com/mange84a/grunt-template-parts
   *
   * Copyright (c) 2022 Magnus Andersson
   * Licensed under the MIT license.
@@ -11,7 +11,7 @@
 module.exports = function(grunt) {
   var path = require('path');
 
-  grunt.registerMultiTask('kreation', '', function() {
+  grunt.registerMultiTask('templateparts', '', function() {
     //Options to be set
     //We need source folder (root templates), include folder (template parts) and output folder, (static html output)
     var options = this.options({

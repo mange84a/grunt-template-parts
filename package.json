@@ -1,23 +1,23 @@
 {
-  "name": "grunt-kreation",
+  "name": "grunt-template-parts",
   "description": "",
-  "version": "1.0.0",
-  "homepage": "https://github.com/monk/kreation-grunt",
+  "version": "0.0.1",
+  "homepage": "https://github.com/mange84a/grunt-template-parts",
   "author": {
     "name": "Magnus Andersson",
     "email": "kontakt@magnus-andersson.nu"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/monk/kreation-grunt.git"
+    "url": "https://github.com/mange84a/grunt-template-parts"
   },
   "bugs": {
-    "url": "https://github.com/monk/kreation-grunt/issues"
+    "url": "https://github.com/mange84a/grunt-template-parts/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/monk/kreation-grunt/blob/master/LICENSE-MIT"
+      "url": "https://github.com/mange84a/grunt-template-parts/blob/master/LICENSE-MIT"
     }
   ],
   "engines": {

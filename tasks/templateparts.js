@@ -90,25 +90,26 @@ module.exports = function(grunt) {
       while(conditionsFound) {
         var expr_values = conditionsFound[1].split(' ');
         //Must be 3 items where index 1 is =, ==, ===, or !=, !==
-        if(expr_values.length !== 3) {
+        if(!(expr_values.length === 3 || (expr_values.length === 7 && expr_values[3] === '&&') )) {
           grunt.log.error("Error in @if statment. Check documentation for more information");
           filecontent = filecontent.replace(conditionsFound[0], '');
         }
-        
+
+        var true_or_false = true;
+        //Check first condition
         //Index 1 must be equal or not equal signs
-        if(expr_values[1] === '==' || expr_values[1] === '=' || expr_values[1] === '===' ) {
-          //Equal signs
-          if(expr_values[0] !== expr_values[2]) {
-            filecontent = filecontent.replace(conditionsFound[0], '');
-          } else {
+        if(expr_values[1] === '==' || expr_values[1] === '=' || expr_values[1] === '===' ) { if(expr_values[0] !== expr_values[2]) { true_or_false = false; } } 
+        if(expr_values[1] === '!==' || expr_values[1] === '!=' || expr_values[1] === '!' ) { if(expr_values[0] === expr_values[2]) { true_or_false = false; } }
+        
+        if(expr_values.length === 7) {
+          //&& condition
+          if(expr_values[5] === '==' || expr_values[5] === '=' || expr_values[5] === '===' ) { if(expr_values[4] !== expr_values[6]) { true_or_false = false; } } 
+          if(expr_values[5] === '!==' || expr_values[5] === '!=' || expr_values[5] === '!' ) { if(expr_values[4] === expr_values[6]) { true_or_false = false; } }
+        }
+        if(true_or_false === true) {
             filecontent = filecontent.replace(conditionsFound[0], conditionsFound[2]);
-          }
-        } else if(expr_values[1] === '!==' || expr_values[1] === '!=' || expr_values[1] === '!' ) { 
-         if(expr_values[0] === expr_values[2]) {
+        } else {
             filecontent = filecontent.replace(conditionsFound[0], '');
-          } else {
-            filecontent = filecontent.replace(conditionsFound[0], conditionsFound[2]);
-          }
         }
         conditionsFound = conditionEx.exec(filecontent);
       } 

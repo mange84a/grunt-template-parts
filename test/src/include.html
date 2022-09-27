@@ -9,5 +9,10 @@
     <h1>The Grunt Templating Generator</h1>
     <p>Demonstrating simple include:</p>
 @get_template_part('card-static.html')
+
+@loop(5)
+<p>hej index $$i</p>
+@endloop
+
 </body>
 </html>

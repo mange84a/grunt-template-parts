@@ -1,5 +1,48 @@
 # grunt-template-parts
 
+Simple static html generator from different html parts!
+
+
+Main html file example
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test template for Grunt Templating Generator</title>
+</head>
+<body>
+    
+    @get_template_part('header.html', {
+      "title" : "header",
+      "class" : "classes",
+      "show_image": true
+    })
+
+    <h2>The Grunt Templating Generator</h2>
+    <ul>
+      @loop(5)
+        <li>Index $$i</li>
+      @endloop
+    </ul>
+</body>
+</html>
+```
+Included file example
+
+
+```html
+  <div class="{{class}}">
+    <h1>{{title}}</h1>
+    @if({{show_image}} == true)
+      <img src="#" />
+    @endif
+  </div>
+```
+
+
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`

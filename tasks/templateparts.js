@@ -35,6 +35,8 @@ module.exports = function(grunt) {
       var conditionEx = new RegExp('@if\\((.*?)\\)([\\s\\S]*?)@endif'); 
       //Regular expression to extract variables in the include file
       var variableEx = new RegExp('\\{\\{(.*?)\\}\\}');
+      //Regular expression for Loop (Todo: check only numbers, not string?)
+      var loopEx = new RegExp('@loop\\((.*?)\\)([\\s\\S]*?)@endloop');
 
       
       //Get first include if exist
@@ -90,22 +92,34 @@ module.exports = function(grunt) {
       while(conditionsFound) {
         var expr_values = conditionsFound[1].split(' ');
         //Must be 3 items where index 1 is =, ==, ===, or !=, !==
-        if(!(expr_values.length === 3 || (expr_values.length === 7 && expr_values[3] === '&&') )) {
+        if(!(expr_values.length === 3 || (expr_values.length === 7 && (expr_values[3] === '&&' || expr_values[3] === '||' )))) {
           grunt.log.error("Error in @if statment. Check documentation for more information");
           filecontent = filecontent.replace(conditionsFound[0], '');
         }
 
         var true_or_false = true;
         //Check first condition
-        //Index 1 must be equal or not equal signs
-        if(expr_values[1] === '==' || expr_values[1] === '=' || expr_values[1] === '===' ) { if(expr_values[0] !== expr_values[2]) { true_or_false = false; } } 
-        if(expr_values[1] === '!==' || expr_values[1] === '!=' || expr_values[1] === '!' ) { if(expr_values[0] === expr_values[2]) { true_or_false = false; } }
         
-        if(expr_values.length === 7) {
+        //Index 1 must be equal or not equal signs
+        if(expr_values[1] === '==' ) { if(expr_values[0] !== expr_values[2]) { true_or_false = false; } } 
+        if(expr_values[1] === '!==' ) { if(expr_values[0] === expr_values[2]) { true_or_false = false; } }
+        
+        if(expr_values.length === 7 && expr_values[3] === '&&') {
+          
           //&& condition
-          if(expr_values[5] === '==' || expr_values[5] === '=' || expr_values[5] === '===' ) { if(expr_values[4] !== expr_values[6]) { true_or_false = false; } } 
-          if(expr_values[5] === '!==' || expr_values[5] === '!=' || expr_values[5] === '!' ) { if(expr_values[4] === expr_values[6]) { true_or_false = false; } }
+          if(expr_values[5] === '==' ) { if(expr_values[4] !== expr_values[6]) { true_or_false = false; } } 
+          if(expr_values[5] === '!==' ) { if(expr_values[4] === expr_values[6]) { true_or_false = false; } }
+        } else if(expr_values.length === 7 && expr_values[3] === '||') {
+          
+          //OR condition, this is true, the entire block is true
+          if(expr_values[5] === '==' ) { if(expr_values[4] === expr_values[6]) { true_or_false = true; } } 
+          if(expr_values[5] === '!==' ) { if(expr_values[4] !== expr_values[6]) { true_or_false = true; } }
+        } else if(expr_values.length === 7) {
+          //Error if length is 7 and index 3 isnt && or ||
+          true_or_false = false;
+          grunt.log.error("Error in @if statment. Check documentation for more information");
         }
+
         if(true_or_false === true) {
             filecontent = filecontent.replace(conditionsFound[0], conditionsFound[2]);
         } else {
@@ -113,6 +127,21 @@ module.exports = function(grunt) {
         }
         conditionsFound = conditionEx.exec(filecontent);
       } 
+
+      //Check for loops?
+      var loopsFound = loopEx.exec(filecontent);
+      while(loopsFound) {
+        var nrOfLoops = parseInt(loopsFound[1]);
+        if(!isNaN(nrOfLoops) && nrOfLoops > 0) {
+          //Loop and paste content
+          var _tmpHtml = '';
+          for(var i = 0; i < nrOfLoops; i++) {
+            _tmpHtml += loopsFound[2].replace('$$i', i);
+          }
+          filecontent = filecontent.replace(loopsFound[0], _tmpHtml);
+        }
+        loopsFound = loopEx.exec(filecontent);
+      }
       
       //Remove whitespace and write file
       filecontent = filecontent.replace(/(^[ \t]*\n)/gm, "");

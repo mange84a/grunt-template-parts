@@ -136,7 +136,7 @@ module.exports = function(grunt) {
           //Loop and paste content
           var _tmpHtml = '';
           for(var i = 0; i < nrOfLoops; i++) {
-            _tmpHtml += loopsFound[2].replace('$$i', i);
+            _tmpHtml += loopsFound[2].replaceAll('$$i', i);
           }
           filecontent = filecontent.replace(loopsFound[0], _tmpHtml);
         }

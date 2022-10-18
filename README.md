@@ -42,6 +42,29 @@ Included file example
   </div>
 ```
 
+## Faker functions
+We now support some simple functions from Faker
+
+```html
+@faker(name) <!-- Generates a random name -->
+@faker(email, arg) <!-- Generates a random email address, arg can be set to force a specific domain. -->
+@faker(excerpt, arg) <!-- Generates an short text, arg can be set to a number to set the number of sentences. -->
+@faker(words, arg) <!-- Generate "arg" number of words -->
+@faker(number, arg1, arg2) <!-- Generate a random number from "arg1 to arg2" -->
+```
+
+###Example:
+```html
+<h3>Contactcard</h3>
+<p>
+    Name: @faker(name)<br />
+    Email: @faker(email, domain.com) <br />
+    Age: @faker(number, 18, 99) <br />
+    Interests: @faker(words, 10)  
+</p>
+<h6>Short description: </h5>
+<p>@faker(excerpt, 10)</p>
+```
 
 
 ## Getting Started

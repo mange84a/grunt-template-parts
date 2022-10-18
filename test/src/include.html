@@ -8,11 +8,11 @@
 <body>
     <h1>The Grunt Templating Generator</h1>
     <p>Demonstrating simple include:</p>
-@get_template_part('card-static.html')
 
 @loop(5)
-<p>hej index $$i</p>
+    @get_template_part('card-static.html')
 @endloop
 
+<p>@faker(excerpt, 20)</p>
 </body>
 </html>

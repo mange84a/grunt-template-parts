@@ -18,20 +18,19 @@ module.exports = function(grunt) {
     var path = require('path');
 
     function runFaker(args) {
+        //If faker is not installed, just return an empty string
         if(faker === undefined) { return ''; }
 
         faker.locale = 'sv';
+
         //Handle args?
         var fn = '';
         var a = null;
+        if(!args) { return ''; }
 
-        if(args) {
-            a = args.split(',');
-            fn = a[0];
-        } else {
-            return '';
-        }
-        grunt.log.writeln(a[1]); 
+        a = args.split(',');
+        fn = a[0];
+
         switch(fn) {
             case 'name': 
                 return faker.name.findName(undefined, undefined, a[1]);
@@ -51,6 +50,13 @@ module.exports = function(grunt) {
                     return faker.datatype.number(parseInt(a[1]));
                 } else {
                     return faker.datatype.number();
+                }
+                break;
+            case 'phone':
+                if(a.length === 2) {
+                    return faker.phone.phoneNumber(a[1].replaceAll("'", "").replaceAll('"',""));
+                } else {
+                    return faker.phone.phoneNumber();
                 }
                 break;
             case 'gender':
@@ -126,7 +132,6 @@ module.exports = function(grunt) {
                                 include_file = include_file.replace(variables[0], arg[variables[1].trim()]);
                             } else {
                                 include_file = include_file.replace(variables[0], '');
-                                grunt.log.writeln("Variable '" + variables[1].trim() + "' not found");
                             }
                             variables = variableEx.exec(include_file);
                         }

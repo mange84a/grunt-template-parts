@@ -51,6 +51,7 @@ We now support some simple functions from Faker
 @faker(excerpt, arg) <!-- Generates an short text, arg can be set to a number to set the number of sentences. -->
 @faker(words, arg) <!-- Generate "arg" number of words -->
 @faker(number, arg1, arg2) <!-- Generate a random number from "arg1 to arg2" -->
+@faker(phone, arg) <!-- Generate a random phonenumber, with option for specific format -->
 ```
 
 ###Example:
@@ -59,6 +60,7 @@ We now support some simple functions from Faker
 <p>
     Name: @faker(name)<br />
     Email: @faker(email, domain.com) <br />
+    Phone: @faker(phone, '+46 ### ## ## ##') <br />
     Age: @faker(number, 18, 99) <br />
     Interests: @faker(words, 10)  
 </p>

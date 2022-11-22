@@ -144,6 +144,14 @@ module.exports = function(grunt) {
             //Conditions
             var conditionsFound = conditionEx.exec(filecontent);
             while(conditionsFound) {
+                
+                //Quickfix to work with nested if statments
+                //If content contans an if, run the regex again on the content to get the nested ifs first
+                while(conditionsFound[2].includes('@if')) {
+                    var _tmp = conditionsFound[0].substring(1); //Remove the first char to avoid inifinity loop (If includes @if but not a working if statement) 
+                    conditionsFound = conditionEx.exec(_tmp); 
+                }
+                
                 var expr_values = conditionsFound[1].split(' ');
                 //Must be 3 items where index 1 is =, ==, ===, or !=, !==
                 if(!(expr_values.length === 3 || (expr_values.length === 7 && (expr_values[3] === '&&' || expr_values[3] === '||' )))) {
@@ -190,7 +198,7 @@ module.exports = function(grunt) {
                     //Loop and paste content
                     var _tmpHtml = '';
                     for(var i = 0; i < nrOfLoops; i++) {
-                        _tmpHtml += loopsFound[2].replaceAll('$$i', i);
+                        _tmpHtml += loopsFound[2].replaceAll('@@i', i);
                     }
                     filecontent = filecontent.replace(loopsFound[0], _tmpHtml);
                 }

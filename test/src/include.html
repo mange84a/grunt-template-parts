@@ -10,9 +10,10 @@
     <p>Demonstrating simple include:</p>
 
 @loop(5)
-@get_template_part('card-static.html',{
-    "test1": "Hej på dig",
-    "arr": "[lorem ipsutm är en mening, ipsum kan också vara det!, dolor]"
+    @get_template_part('card-static.html',{
+        "test1": "Hej på dig",
+        "test": "[Rammel, pavel]",
+        "arr": "[lorem ipsutm är en mening, ipsum kan också vara det!, dolor]"
 })
 @endloop
 

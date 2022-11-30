@@ -7,7 +7,7 @@
 
 var makeIncludes = function(filecontent, grunt, options) {
 
-    //Regular expression to extract filename and variables from in import statment
+    //Regular expression to extract file name and variables from in import statment
     var regExInclude = new RegExp('@get_template_part\\(\\s*["\'](.*?)["\'](,\\s*({[\\s\\S]*?})){0,1}\\s*\\)');
     //Regular expression to extract variables in the include file
     var variableEx = new RegExp('\\{\\{(.*?)\\}\\}');
@@ -24,8 +24,7 @@ var makeIncludes = function(filecontent, grunt, options) {
             includesFound = regExInclude.exec(filecontent);
             continue;
         }
-
-        //File exists, read the file content
+                //File exists, read the file content
         var include_file = grunt.file.read(options.includes_directory + '/' + includesFound[1]);
         //Check for variables (If data is written to index 3)
         if(includesFound[3]) {

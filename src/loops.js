@@ -17,22 +17,23 @@ var replaceLoops = function(filecontent, grunt, options) {
             //Loop and paste content
             
             var _tmpHtml = '';
-            var arrIndex = 0;
 
             for(var i = 0; i < nrOfLoops; i++) {
                 //Replace index placeholder with loop index
                 var _toAdd = loopsFound[2].replaceAll('@@i', i);
-            
                 //Look for array inside the loop. If found, replace the array with the element of current arraIndex
                 var arrFound = arrayEx.exec(_toAdd);
                 while(arrFound) {
+                    
                     var arr = arrFound[1].split(',');
+                    var arrIndex = i;
+                    if(arrIndex >= arr.length) { 
+                        arrIndex = i % arr.length; 
+                    }
+                    
                     if(arr.length > 0) {
-                        if(arrIndex >= arr.length) {
-                            arrIndex = 0;
-                        }
+                        grunt.log.writeln(arr[arrIndex]); 
                         _toAdd = _toAdd.replace(arrFound[0], arr[arrIndex].trim());
-                        arrIndex++;
                     }
                     arrFound = arrayEx.exec(_toAdd);
                 }

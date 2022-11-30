@@ -33,13 +33,25 @@ module.exports = function(grunt) {
 
         switch(fn) {
             case 'name': 
-                return faker.name.findName(undefined, undefined, a[1]);
+                if(a.length === 2) {
+                    if(a[1].trim() === 'male') {
+                        return faker.name.findName(undefined, undefined, 0);
+                    } else {
+                        return faker.name.findName(undefined, undefined, 1);
+                    }
+                } else {
+                    return faker.name.findName();
+                }
+                break;
             case 'email':
-                return faker.internet.email(undefined, undefined, a[1].trim());
+                return faker.internet.email(undefined, undefined, a[1].trim()).toLowerCase();
             case 'excerpt':
                 return faker.lorem.sentences(a[1]);
+            case 'jobtitle':
+                return faker.name.jobTitle();
             case 'words':
-                return faker.lorem.words(a[1]);
+                if(a[1].trim() === "1") { return "Lorem"; }
+                return "Lorem " + faker.lorem.words(a[1]);
             case 'number':
                 if(a.length === 3) {
                     return faker.datatype.number({ 
@@ -59,6 +71,10 @@ module.exports = function(grunt) {
                     return faker.phone.phoneNumber();
                 }
                 break;
+            case 'address': 
+                return faker.address.streetName().replace(/\s/g, '') + ' ' + faker.datatype.number(99);
+            case 'zip-city':
+                return faker.address.zipCode('### ##') + ' ' + faker.address.city();
             case 'gender':
                 return faker.name.gender(true);
         }
@@ -93,7 +109,7 @@ module.exports = function(grunt) {
             var loopEx = new RegExp('@loop\\((.*?)\\)([\\s\\S]*?)@endloop');
             //Faker Regex
             var fakerEx = new RegExp('@faker\\((.*?)\\)'); 
-
+            var arrayEx = new RegExp('\\[(.*?)\\]');
             //Get first include if exist
             var includesFound = regExInclude.exec(filecontent);
             //Loop while include statments is found
@@ -197,8 +213,25 @@ module.exports = function(grunt) {
                 if(!isNaN(nrOfLoops) && nrOfLoops > 0) {
                     //Loop and paste content
                     var _tmpHtml = '';
+                    var arrIndex = 0;
                     for(var i = 0; i < nrOfLoops; i++) {
-                        _tmpHtml += loopsFound[2].replaceAll('@@i', i);
+                        var _toAdd = loopsFound[2].replaceAll('@@i', i);
+                        var arrFound = arrayEx.exec(_toAdd);
+                        while(arrFound) {
+                            var arr = arrFound[1].split(',');
+                            if(arr.length > 0) {
+                                if(arrIndex >= arr.length) {
+                                    arrIndex = 0;
+                                }
+                                _toAdd = _toAdd.replace(arrFound[0], arr[arrIndex].trim());
+                                arrIndex++;
+                            }
+                            
+                            arrFound = arrayEx.exec(_toAdd);
+                        }
+
+                        _tmpHtml += _toAdd;                       
+                        
                     }
                     filecontent = filecontent.replace(loopsFound[0], _tmpHtml);
                 }

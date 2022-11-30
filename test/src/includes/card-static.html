@@ -1,12 +1,19 @@
 <h3>Static included card</h3>
 <p>
-Name: @faker(name)<br />
+Name: @faker(name, male)<br />
     Email: @faker(email, magnus.com) <br />
     Phone: @faker(phone, "+48 91 ### ## ##") <br />
     Age: @faker(number, 10, 48) <br >
-    Gender: @faker(gender)
+    Gender: @faker(gender) <br>
+    Title: @faker(jobtitle) <br >
+    Adress: @faker(address) <br>
+    @faker(zip-city)
 </p>
 @if(2 == 2)
     <p>Det funkar nu!</p>
 @endif
 <p>@faker(words, 10)</p>
+
+
+<p>{{test1}}</p>
+<strong>{{arr}}</strong>

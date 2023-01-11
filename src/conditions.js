@@ -26,7 +26,9 @@ var runConditions = function(filecontent, grunt, options) {
         //END QUICKFIX
         
                 
-
+        if(conditionsFound[1].includes('@faker')) {
+            conditionsFound[2] = conditionsFound[2].slice(1); 
+        } 
        
         //Empty if condition, return false
         if(conditionsFound[1].length === 0) {
@@ -35,18 +37,18 @@ var runConditions = function(filecontent, grunt, options) {
         
         //Expression to be evaluated
         var expr_values = conditionsFound[1].split(' ');
-        //Single check if variable exists
-        if(expr_values.length === 1) {
+        
+        if(expr_values[1] !== "==" && expr_values[1] !== "!==" ) {
             conditionsFound[1] = "1 == 1";
             var expr_values = conditionsFound[1].split(' ');
         }
 
-        
         //Must be 3 items where index 1 is =, ==, ===, or !=, !==
         if(!(expr_values.length === 3 || (expr_values.length === 7 && (expr_values[3] === '&&' || expr_values[3] === '||' )))) {
             grunt.log.error("Error in @if statment. Check documentation for more information");
             filecontent = filecontent.replace(conditionsFound[0], '');
         }
+       
         
         //EVALUATE
         var true_or_false = true;

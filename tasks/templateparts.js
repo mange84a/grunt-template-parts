@@ -25,7 +25,6 @@ module.exports = function(grunt) {
 
 
         function create_files(abspath, rootdir, subdir, filename) {
-            grunt.log.writeln(filename);
             //Only root files to be processed
             if(subdir) { return; }
 

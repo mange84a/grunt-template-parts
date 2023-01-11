@@ -8,10 +8,11 @@
  jag är 28 och man
 @endif
 
-
-@if({{age}} == 28)
-    <p>Jag är 28 år</p>
-    @if({{gender}} !== Male)
-        <p>OCH KVINNA!</p>
+@if({{age}})
+    @if({{age}} == 28)
+        <p>Jag är 28 år</p>
+        @if({{gender}} !== Male)
+            <p>OCH KVINNA!</p>
+        @endif
     @endif
 @endif

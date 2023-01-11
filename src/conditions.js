@@ -24,10 +24,24 @@ var runConditions = function(filecontent, grunt, options) {
             conditionsFound = conditionEx.exec(_tmp); 
         }
         //END QUICKFIX
+        
+                
 
+       
+        //Empty if condition, return false
+        if(conditionsFound[1].length === 0) {
+            conditionsFound[1] = "1 == 0";
+        }
         
         //Expression to be evaluated
         var expr_values = conditionsFound[1].split(' ');
+        //Single check if variable exists
+        if(expr_values.length === 1) {
+            conditionsFound[1] = "1 == 1";
+            var expr_values = conditionsFound[1].split(' ');
+        }
+
+        
         //Must be 3 items where index 1 is =, ==, ===, or !=, !==
         if(!(expr_values.length === 3 || (expr_values.length === 7 && (expr_values[3] === '&&' || expr_values[3] === '||' )))) {
             grunt.log.error("Error in @if statment. Check documentation for more information");

@@ -9,9 +9,11 @@
     <h1>The Grunt Templating Generator</h1>
     <p>Demonstrating simple include:</p>
 
+
 @loop(5)
     @get_template_part('card-static.html',{
         "test1": "Hej på dig",
+        "test2": "",
         "test": "[Rammel, pavel]",
         "arr": "[lorem ipsutm är en mening, ipsum kan också vara det!, dolor]"
 })
